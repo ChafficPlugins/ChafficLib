@@ -43,6 +43,32 @@ tasks {
     test {
         useJUnitPlatform()
         finalizedBy(jacocoTestReport)
+
+        testLogging {
+            events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
+
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
+
+            showStandardStreams = true
+
+            displayGranularity = 2
+
+            afterSuite(
+                KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
+                    if (desc.parent == null) {
+                        println("\nTest result: ${result.resultType}")
+                        println(
+                            "Test summary: ${result.testCount} tests, " +
+                                "${result.successfulTestCount} succeeded, " +
+                                "${result.failedTestCount} failed, " +
+                                "${result.skippedTestCount} skipped",
+                        )
+                    }
+                }),
+            )
+        }
     }
 
     jacocoTestReport {
