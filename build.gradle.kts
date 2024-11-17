@@ -16,6 +16,9 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
     }
+    maven("https://repo.papermc.io/repository/maven-public/") {
+        name = "papermc"
+    }
 }
 
 dependencies {
@@ -28,6 +31,7 @@ dependencies {
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.133.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
 }
 
 val targetJavaVersion = 21
