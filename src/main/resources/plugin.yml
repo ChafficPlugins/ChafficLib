@@ -1,0 +1,8 @@
+name: ChafficLib
+version: '1.0.0'
+main: de.chafficplugins.chafficLib.ChafficLib
+api-version: '1.21'
+prefix: CLib
+load: STARTUP
+authors: [ Chafficui ]
+website: felixbeinssen.net
