@@ -41,8 +41,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./build/reports/jacoco/test/jacocoTestReport.xml
-          slug: chafficplugins/ChafficLib
-          fail_ci_if_error: true
+          slug: ChafficPlugins/ChafficLib
+          fail_ci_if_error: false
 
       - name: Generate Documentation
         run: ./gradlew dokkaHtml --no-daemon
