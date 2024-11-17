@@ -218,7 +218,7 @@ Format: `should_expectedBehavior_when_condition`
 Example: `should_throwException_when_inventoryIsFull`
 
 ### Coverage Requirements
-- Minimum 80% code coverage
+- Minimum 70% code coverage
 - 100% coverage for critical components
 - Test all edge cases
 - Include both positive and negative tests

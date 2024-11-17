@@ -14,8 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation generation with Dokka
 - Contribution guidelines
 - Version support documentation
+- Testing framework setup with JUnit 5 and MockBukkit
+- Test utilities for common testing scenarios
+- Example tests verifying framework functionality
+- Comprehensive test logging configuration
 
-## [0.0.1] - 2024-01-17
+## [0.0.1] - 2024-11-17
 
 ### Added
 - Basic project structure

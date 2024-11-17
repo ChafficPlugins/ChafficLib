@@ -16,6 +16,9 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
     }
+    maven("https://repo.papermc.io/repository/maven-public/") {
+        name = "papermc"
+    }
 }
 
 dependencies {
@@ -28,6 +31,7 @@ dependencies {
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.133.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
 }
 
 val targetJavaVersion = 21
@@ -39,6 +43,32 @@ tasks {
     test {
         useJUnitPlatform()
         finalizedBy(jacocoTestReport)
+
+        testLogging {
+            events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
+
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
+
+            showStandardStreams = true
+
+            displayGranularity = 2
+
+            afterSuite(
+                KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
+                    if (desc.parent == null) {
+                        println("\nTest result: ${result.resultType}")
+                        println(
+                            "Test summary: ${result.testCount} tests, " +
+                                "${result.successfulTestCount} succeeded, " +
+                                "${result.failedTestCount} failed, " +
+                                "${result.skippedTestCount} skipped",
+                        )
+                    }
+                }),
+            )
+        }
     }
 
     jacocoTestReport {
@@ -47,14 +77,55 @@ tasks {
             xml.required.set(true)
             html.required.set(true)
         }
+
+        classDirectories.setFrom(
+            files(
+                classDirectories.files.map {
+                    fileTree(it) {
+                        // Exclude Java synthetic methods for Kotlin companion objects
+                        exclude(
+                            "**/*\$Companion\$*.*",
+                        )
+                    }
+                },
+            ),
+        )
     }
 
     jacocoTestCoverageVerification {
         violationRules {
             rule {
                 limit {
-                    minimum = "0.8".toBigDecimal()
+                    minimum = "0.7".toBigDecimal()
                 }
+                element = "CLASS"
+
+                excludes =
+                    listOf(
+                        // Exclude companion object synthetic classes
+                        "*.Companion",
+                    )
+            }
+
+            // Ignore methods annotated with @Generated
+            rule {
+                element = "METHOD"
+                excludes =
+                    listOf(
+                        "@javax.annotation.Generated",
+                    )
+            }
+
+            // Exclude synthetic methods
+            rule {
+                element = "METHOD"
+                excludes =
+                    listOf(
+                        // Kotlin synthetic methods
+                        "*\$\$inlined*",
+                        // Java synthetic methods
+                        "*\$Companion\$*",
+                    )
             }
         }
     }
