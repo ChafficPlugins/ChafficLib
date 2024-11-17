@@ -7,10 +7,15 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -19,42 +24,42 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'gradle'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-daemon
 
-      - name: Test with Gradle
-        run: ./gradlew test
+      - name: Run Tests
+        run: ./gradlew test --no-daemon
 
       - name: Generate Documentation
-        run: ./gradlew dokkaHtml
+        run: ./gradlew dokkaHtml --no-daemon
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/dokka/html
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/libs/ChafficLib-${{ github.ref_name }}.jar
-          asset_name: ChafficLib-${{ github.ref_name }}.jar
-          asset_content_type: application/java-archive
+          files: |
+            build/libs/ChafficLib-${{ github.ref_name }}.jar
+            build/libs/ChafficLib-${{ github.ref_name }}-sources.jar
+            build/libs/ChafficLib-${{ github.ref_name }}-javadoc.jar
+          body_path: ${{ github.workspace }}/CHANGELOG.md
+          generate_release_notes: true
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/dokka/html
+        id: deployment
+        uses: actions/deploy-pages@v4
