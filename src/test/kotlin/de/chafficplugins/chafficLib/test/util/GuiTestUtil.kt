@@ -11,7 +11,7 @@ import org.mockito.kotlin.whenever
 /**
  * Utility class for GUI-related testing functionality.
  */
-class GuiTestUtil {
+object GuiTestUtil {
     /**
      * Creates a mock inventory click event
      * @param player The player who clicked

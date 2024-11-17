@@ -1,0 +1,9 @@
+# ChafficLib Test Configuration
+
+# Debug mode (default: false)
+debug: false
+
+# Test settings
+settings:
+  enabled: true
+  value: 42

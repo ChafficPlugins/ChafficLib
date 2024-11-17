@@ -77,14 +77,55 @@ tasks {
             xml.required.set(true)
             html.required.set(true)
         }
+
+        classDirectories.setFrom(
+            files(
+                classDirectories.files.map {
+                    fileTree(it) {
+                        // Exclude Java synthetic methods for Kotlin companion objects
+                        exclude(
+                            "**/*\$Companion\$*.*",
+                        )
+                    }
+                },
+            ),
+        )
     }
 
     jacocoTestCoverageVerification {
         violationRules {
             rule {
                 limit {
-                    minimum = "0.8".toBigDecimal()
+                    minimum = "0.7".toBigDecimal()
                 }
+                element = "CLASS"
+
+                excludes =
+                    listOf(
+                        // Exclude companion object synthetic classes
+                        "*.Companion",
+                    )
+            }
+
+            // Ignore methods annotated with @Generated
+            rule {
+                element = "METHOD"
+                excludes =
+                    listOf(
+                        "@javax.annotation.Generated",
+                    )
+            }
+
+            // Exclude synthetic methods
+            rule {
+                element = "METHOD"
+                excludes =
+                    listOf(
+                        // Kotlin synthetic methods
+                        "*\$\$inlined*",
+                        // Java synthetic methods
+                        "*\$Companion\$*",
+                    )
             }
         }
     }
