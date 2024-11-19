@@ -1,0 +1,9 @@
+# ChafficLib Configuration
+
+# Debug mode (default: false)
+debug: false
+
+# Library settings
+settings:
+  enabled: true
+  value: 42

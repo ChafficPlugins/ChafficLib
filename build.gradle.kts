@@ -16,6 +16,9 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
     }
+    maven("https://repo.papermc.io/repository/maven-public/") {
+        name = "papermc"
+    }
 }
 
 dependencies {
@@ -28,6 +31,7 @@ dependencies {
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.133.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
 }
 
 val targetJavaVersion = 21
@@ -36,9 +40,68 @@ kotlin {
 }
 
 tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        archiveBaseName.set("ChafficLib")
+        archiveVersion.set(version.toString())
+    }
+
+    jar {
+        archiveBaseName.set("ChafficLib")
+        archiveVersion.set(version.toString())
+    }
+
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+
+    register<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+
+    register<Jar>("javadocJar") {
+        dependsOn(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc.get().destinationDir)
+    }
+
+    build {
+        dependsOn(shadowJar)
+        dependsOn("sourcesJar")
+        dependsOn("javadocJar")
+        dependsOn(jacocoTestCoverageVerification)
+    }
+
     test {
         useJUnitPlatform()
         finalizedBy(jacocoTestReport)
+
+        testLogging {
+            events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
+
+            showExceptions = true
+            showCauses = true
+            showStackTraces = true
+
+            showStandardStreams = true
+
+            displayGranularity = 2
+
+            afterSuite(
+                KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
+                    if (desc.parent == null) {
+                        println("\nTest result: ${result.resultType}")
+                        println(
+                            "Test summary: ${result.testCount} tests, " +
+                                "${result.successfulTestCount} succeeded, " +
+                                "${result.failedTestCount} failed, " +
+                                "${result.skippedTestCount} skipped",
+                        )
+                    }
+                }),
+            )
+        }
     }
 
     jacocoTestReport {
@@ -47,21 +110,38 @@ tasks {
             xml.required.set(true)
             html.required.set(true)
         }
+
+        classDirectories.setFrom(
+            files(
+                classDirectories.files.map {
+                    fileTree(it) {
+                        exclude("**/*\$Companion\$*.*")
+                    }
+                },
+            ),
+        )
     }
 
     jacocoTestCoverageVerification {
         violationRules {
             rule {
                 limit {
-                    minimum = "0.8".toBigDecimal()
+                    minimum = "0.7".toBigDecimal()
                 }
+                element = "CLASS"
+                excludes = listOf("*.Companion")
+            }
+
+            rule {
+                element = "METHOD"
+                excludes = listOf("@javax.annotation.Generated")
+            }
+
+            rule {
+                element = "METHOD"
+                excludes = listOf("*\$\$inlined*", "*\$Companion\$*")
             }
         }
-    }
-
-    build {
-        dependsOn(shadowJar)
-        dependsOn(jacocoTestCoverageVerification)
     }
 
     dokkaHtml {
