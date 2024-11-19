@@ -40,6 +40,39 @@ kotlin {
 }
 
 tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        archiveBaseName.set("ChafficLib")
+        archiveVersion.set(version.toString())
+    }
+
+    jar {
+        archiveBaseName.set("ChafficLib")
+        archiveVersion.set(version.toString())
+    }
+
+    javadoc {
+        options.encoding = "UTF-8"
+    }
+
+    register<Jar>("sourcesJar") {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+
+    register<Jar>("javadocJar") {
+        dependsOn(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc.get().destinationDir)
+    }
+
+    build {
+        dependsOn(shadowJar)
+        dependsOn("sourcesJar")
+        dependsOn("javadocJar")
+        dependsOn(jacocoTestCoverageVerification)
+    }
+
     test {
         useJUnitPlatform()
         finalizedBy(jacocoTestReport)
@@ -82,10 +115,7 @@ tasks {
             files(
                 classDirectories.files.map {
                     fileTree(it) {
-                        // Exclude Java synthetic methods for Kotlin companion objects
-                        exclude(
-                            "**/*\$Companion\$*.*",
-                        )
+                        exclude("**/*\$Companion\$*.*")
                     }
                 },
             ),
@@ -99,40 +129,19 @@ tasks {
                     minimum = "0.7".toBigDecimal()
                 }
                 element = "CLASS"
-
-                excludes =
-                    listOf(
-                        // Exclude companion object synthetic classes
-                        "*.Companion",
-                    )
+                excludes = listOf("*.Companion")
             }
 
-            // Ignore methods annotated with @Generated
             rule {
                 element = "METHOD"
-                excludes =
-                    listOf(
-                        "@javax.annotation.Generated",
-                    )
+                excludes = listOf("@javax.annotation.Generated")
             }
 
-            // Exclude synthetic methods
             rule {
                 element = "METHOD"
-                excludes =
-                    listOf(
-                        // Kotlin synthetic methods
-                        "*\$\$inlined*",
-                        // Java synthetic methods
-                        "*\$Companion\$*",
-                    )
+                excludes = listOf("*\$\$inlined*", "*\$Companion\$*")
             }
         }
-    }
-
-    build {
-        dependsOn(shadowJar)
-        dependsOn(jacocoTestCoverageVerification)
     }
 
     dokkaHtml {
