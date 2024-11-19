@@ -1,0 +1,9 @@
+root: ./docs
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  guide/getting-started: ./guide/getting-started.md
+  api/overview: ./api/overview.md

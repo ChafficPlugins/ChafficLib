@@ -91,5 +91,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - 🌐 [Website](https://felixbeinssen.net)
 - 📚 [Documentation](https://chafficplugins.gitbook.io/chafficlib/)
-- 💬 [Discord](https://discord.gg/XXXXX)
+- 💬 [Discord](https://discord.gg/RPZBhB4rna)
 - 🐛 [Issue Tracker](https://github.com/chafficplugins/ChafficLib/issues)

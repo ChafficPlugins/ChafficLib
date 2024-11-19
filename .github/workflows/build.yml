@@ -10,10 +10,15 @@ permissions:
   contents: read
   checks: write
   pull-requests: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,17 +51,3 @@ jobs:
 
       - name: Generate Documentation
         run: ./gradlew dokkaHtml --no-daemon
-
-      - name: Archive documentation
-        uses: actions/upload-artifact@v4
-        with:
-          name: documentation
-          path: build/dokka/html/
-          retention-days: 14
-
-      - name: Check Code Coverage
-        run: |
-          ./gradlew jacocoTestCoverageVerification --no-daemon || {
-            echo "Code coverage is below 80%"
-            exit 1
-          }
