@@ -6,8 +6,7 @@ ChafficLib follows semantic versioning (MAJOR.MINOR.PATCH) and provides Long Ter
 
 | Version | Release Date | Support Status | Minecraft Versions | End of Life |
 |---------|--------------|----------------|-------------------|-------------|
-| 1.0.x   | 2025-Q2      | LTS            | 1.20.x - 1.21.x  | 2026-Q1     |
-| 0.0.x   | 2025-Q1      | Development    | 1.20.x - 1.21.x  | N/A         |
+| 0.0.x   | 2024-11-19   | Development    | 1.20.x - 1.21.x  | N/A         |
 
 ## Release Types
 
@@ -62,10 +61,8 @@ ChafficLib follows semantic versioning (MAJOR.MINOR.PATCH) and provides Long Ter
 
 ## Release Schedule 2024
 
-| Version | Type     | Release Date | EOL Date   |
-|---------|----------|--------------|------------|
-| 1.0.0   | LTS      | 2024-Q1     | 2025-Q1   |
-| 1.1.0   | Regular  | 2024-Q2     | 2024-Q3   |
-| 1.2.0   | Regular  | 2024-Q3     | 2024-Q4   |
-| 1.3.0   | Regular  | 2024-Q4     | 2025-Q1   |
-| 2.0.0   | LTS      | 2025-Q1     | 2026-Q1   |
+| Version | Type     | Release Date | EOL Date |
+|---------|----------|--------------|----------|
+| 0.1.0   | Regular  | 2024-Q4      | 2025-Q1  |
+| 0.2.0   | Regular  | 2025-Q1      | 2025-Q2  |
+| 1.0.0   | LTS      | 2025-Q2      | 2026-Q2  |

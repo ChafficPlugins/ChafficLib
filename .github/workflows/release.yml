@@ -54,9 +54,8 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            build/libs/ChafficLib-${{ github.ref_name }}.jar
-            build/libs/ChafficLib-${{ github.ref_name }}-sources.jar
-            build/libs/ChafficLib-${{ github.ref_name }}-javadoc.jar
+            build/libs/ChafficLib-*.jar
+            !build/libs/ChafficLib-*-all.jar
           body_path: ${{ github.workspace }}/CHANGELOG.md
           generate_release_notes: true
 
