@@ -27,11 +27,12 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.3")
     testImplementation("org.mockito:mockito-core:5.14.2")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.133.2")
+    testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.0.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 }
 
 val targetJavaVersion = 21
@@ -145,7 +146,7 @@ tasks {
     }
 
     dokkaHtml {
-        outputDirectory.set(buildDir.resolve("dokka/html"))
+        outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
     }
 
     processResources {

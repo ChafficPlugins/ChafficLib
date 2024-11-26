@@ -1,11 +1,11 @@
 package de.chafficplugins.chafficLib
 
-import be.seeseemelk.mockbukkit.MockBukkit
 import de.chafficplugins.chafficLib.test.BaseTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockbukkit.mockbukkit.MockBukkit
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -72,7 +72,7 @@ class ChafficLibTest : BaseTest() {
         @Test
         fun `server should process ticks`() {
             val initialTicks = server.currentTick
-            simulateTicks(5)
+            tick()
             assertTrue(server.currentTick > initialTicks, "Server should process ticks")
         }
 
