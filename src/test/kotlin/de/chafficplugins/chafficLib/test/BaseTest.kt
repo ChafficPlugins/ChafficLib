@@ -1,10 +1,10 @@
 package de.chafficplugins.chafficLib.test
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.ServerMock
 import de.chafficplugins.chafficLib.ChafficLib
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import org.mockbukkit.mockbukkit.MockBukkit
+import org.mockbukkit.mockbukkit.ServerMock
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -65,4 +65,11 @@ abstract class BaseTest {
     protected fun tick() {
         server.scheduler.performTicks(1)
     }
+
+    /**
+     * Creates a test player
+     * @param name Player name
+     * @return The created player mock
+     */
+    protected fun createPlayer(name: String = "TestPlayer") = server.addPlayer(name)
 }
