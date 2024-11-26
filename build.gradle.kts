@@ -32,7 +32,7 @@ dependencies {
     testImplementation("org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.0.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("io.papermc.paper:paper-api:1.21.3-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
 }
 
 val targetJavaVersion = 21
