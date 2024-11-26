@@ -72,7 +72,7 @@ class ChafficLibTest : BaseTest() {
         @Test
         fun `server should process ticks`() {
             val initialTicks = server.currentTick
-            simulateTicks(5)
+            tick()
             assertTrue(server.currentTick > initialTicks, "Server should process ticks")
         }
 

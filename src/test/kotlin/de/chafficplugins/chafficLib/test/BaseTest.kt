@@ -52,14 +52,6 @@ abstract class BaseTest {
     }
 
     /**
-     * Utility method to simulate server ticks
-     * @param ticks Number of ticks to simulate
-     */
-    protected fun simulateTicks(ticks: Long) {
-        server.scheduler.performTicks(ticks)
-    }
-
-    /**
      * Utility method to advance one tick and run scheduled tasks
      */
     protected fun tick() {
