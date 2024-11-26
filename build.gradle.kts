@@ -145,7 +145,7 @@ tasks {
     }
 
     dokkaHtml {
-        outputDirectory.set(buildDir.resolve("dokka/html"))
+        outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
     }
 
     processResources {
