@@ -13,14 +13,16 @@ class BorderTemplate(
     private val borderItem: ItemStack = ItemStack(Material.BLACK_STAINED_GLASS_PANE),
 ) : InventoryTemplate {
     override fun apply(builder: InventoryBuilder) {
+        val inventorySize = builder.getSize()
+        val rows = inventorySize / 9
+        
         // Top and bottom rows
         for (i in 0..8) {
             builder.setItem(i, borderItem.clone())
-            builder.setItem(builder.build().size - 9 + i, borderItem.clone())
+            builder.setItem(inventorySize - 9 + i, borderItem.clone())
         }
 
         // Left and right columns
-        val rows = builder.build().size / 9
         for (i in 1 until rows - 1) {
             builder.setItem(i * 9, borderItem.clone())
             builder.setItem(i * 9 + 8, borderItem.clone())

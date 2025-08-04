@@ -94,6 +94,12 @@ class InventoryBuilder private constructor(
     fun getClickHandler(slot: Int): ((InventoryClickEvent) -> Unit)? = clickHandlers[slot]
 
     /**
+     * Get the size of the inventory
+     * @return The inventory size
+     */
+    fun getSize(): Int = size.size
+
+    /**
      * Validate that a slot is within bounds
      * @param slot The slot to validate
      * @throws IllegalArgumentException if slot is out of bounds
